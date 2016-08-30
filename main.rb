@@ -5,15 +5,19 @@ require 'json' #used to return a json object
 #gets the message as the first argument given when the file is run
 message = ARGV.first
 
-#gets the public key from the file generated using OpenSSL
-pubkey = OpenSSL::PKey::RSA.new File.read 'public.pem'
+def run(message)
+  #gets the public key from the file generated using OpenSSL
+  pubkey = OpenSSL::PKey::RSA.new File.read 'public.pem'
 
-#creates digest, private key, then gets signature
-digest = OpenSSL::Digest::SHA256.new
-private_key = OpenSSL::PKey::RSA.new File.read 'private.pem'
-signature = private_key.sign(digest, message)
+  #creates digest, private key, then gets signature
+  digest = OpenSSL::Digest::SHA256.new
+  private_key = OpenSSL::PKey::RSA.new File.read 'private.pem'
+  signature = private_key.sign(digest, message)
 
-#create and initialize SignedIdentifier object
-signed_identifier = SignedIdentifier.new(message, signature, pubkey)
+  #create and initialize SignedIdentifier object
+  signed_identifier = SignedIdentifier.new(message, signature, pubkey)
 
-puts signed_identifier.to_hash.to_json
+  puts signed_identifier.to_hash.to_json
+end
+
+run(message)
