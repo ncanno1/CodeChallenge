@@ -1,5 +1,6 @@
 require 'OpenSSL' #used to get the public key
 require './signed_identifier' #used for signed identifier object
+require 'json' #used to return a json object
 
 #gets the message as the first argument given when the file is run
 message = ARGV.first
@@ -15,6 +16,4 @@ signature = private_key.sign(digest, message)
 #create and initialize SignedIdentifier object
 signed_identifier = SignedIdentifier.new(message, signature, pubkey)
 
-puts signed_identifier.message
-puts signed_identifier.signature
-puts signed_identifier.pubkey
+puts signed_identifier.to_hash.to_json
