@@ -1,5 +1,5 @@
-#used to get the public key
-require 'OpenSSL'
+require 'OpenSSL' #used to get the public key
+require './signed_identifier' #used for signed identifier object
 
 #gets the message as the first argument given when the file is run
 message = ARGV.first
@@ -12,6 +12,9 @@ digest = OpenSSL::Digest::SHA256.new
 private_key = OpenSSL::PKey::RSA.new File.read 'private.pem'
 signature = private_key.sign(digest, message)
 
-puts message
-puts pubkey
-puts signature
+#create and initialize SignedIdentifier object
+signed_identifier = SignedIdentifier.new(message, signature, pubkey)
+
+puts signed_identifier.message
+puts signed_identifier.signature
+puts signed_identifier.pubkey
