@@ -1,0 +1,2 @@
+class SignedIdentifier
+end
